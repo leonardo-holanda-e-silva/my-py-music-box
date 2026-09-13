@@ -43,7 +43,9 @@ See [`docs/sdd/05-infrastructure.md`](docs/sdd/05-infrastructure.md) and [`docs/
 
 ```bash
 uv sync --group packaging
-uv run briefcase create
-uv run briefcase build
-uv run briefcase package
+uv run briefcase create windows --no-input
+uv run briefcase build windows --no-input
+uv run briefcase package windows --no-input --adhoc-sign
 ```
+
+The Windows installer is written to `dist/My Py Music Box-0.1.0.msi`.

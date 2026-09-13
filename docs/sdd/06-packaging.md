@@ -15,7 +15,7 @@ PyInstaller is a fallback if Briefcase stalls on PortAudio. PyInstaller `*.spec`
 
 | OS | Command | Artifact |
 |---|---|---|
-| Windows | `uv run briefcase package windows` | `.msi` or `.exe` |
+| Windows | `uv run briefcase package windows --adhoc-sign` | `.msi` (`dist/My Py Music Box-0.1.0.msi`) |
 | macOS | `uv run briefcase package macOS` | `.dmg` |
 | Linux | `uv run briefcase package linux` | `.AppImage` or `.deb` |
 

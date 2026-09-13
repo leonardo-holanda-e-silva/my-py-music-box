@@ -3,16 +3,21 @@ name = "my-py-music-box"
 version = "0.1.0"
 description = "Desktop app that emulates a classic 21-tine music box."
 readme = "README.md"
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
   { name = "LHES Tech Solutions" },
 ]
 requires-python = ">=3.11"
 dependencies = [
-  "PyQt5>=5.15",
+  "PyQt5==5.15.11",
   "numpy>=1.24",
   "sounddevice>=0.4",
 ]
+
+[project.urls]
+Homepage = "https://lhes.tech"
+Repository = "https://github.com/leonardo-holanda-e-silva/my-py-music-box"
 
 [project.optional-dependencies]
 dev = [
@@ -35,6 +40,12 @@ packages = ["src/my_py_music_box"]
 
 [tool.uv]
 default-groups = ["dev"]
+required-environments = [
+  "sys_platform == 'win32' and platform_machine == 'AMD64'",
+  "sys_platform == 'linux' and platform_machine == 'x86_64'",
+  "sys_platform == 'darwin' and platform_machine == 'arm64'",
+  "sys_platform == 'darwin' and platform_machine == 'x86_64'",
+]
 
 [dependency-groups]
 dev = [
@@ -56,14 +67,18 @@ testpaths = ["tests"]
 project_name = "My Py Music Box"
 bundle = "dev.leonardo.mypymusicbox"
 version = "0.1.0"
-license.file = "LICENSE"
+license = "MIT"
+"license-files" = ["LICENSE"]
+author = "LHES Tech Solutions"
+url = "https://lhes.tech"
 
 [tool.briefcase.app.my-py-music-box]
 formal_name = "My Py Music Box"
 description = "Emulate a classic 21-tine music box."
-sources = ["src/my_py_music_box"]
+icon = "packaging/icon"
+sources = ["src/my_py_music_box", "examples"]
 requires = [
-  "PyQt5>=5.15",
+  "PyQt5==5.15.11",
   "numpy>=1.24",
   "sounddevice>=0.4",
 ]
