@@ -1,0 +1,73 @@
+[project]
+name = "my-py-music-box"
+version = "0.1.0"
+description = "Desktop app that emulates a classic 21-tine music box."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "LHES Tech Solutions" },
+]
+requires-python = ">=3.11"
+dependencies = [
+  "PyQt5>=5.15",
+  "numpy>=1.24",
+  "sounddevice>=0.4",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.6",
+]
+packaging = [
+  "briefcase>=0.3.22",
+]
+
+[project.scripts]
+my-py-music-box = "my_py_music_box.app:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/my_py_music_box"]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.6",
+]
+packaging = [
+  "briefcase>=0.3.22",
+]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.briefcase]
+project_name = "My Py Music Box"
+bundle = "dev.leonardo.mypymusicbox"
+version = "0.1.0"
+license.file = "LICENSE"
+
+[tool.briefcase.app.my-py-music-box]
+formal_name = "My Py Music Box"
+description = "Emulate a classic 21-tine music box."
+sources = ["src/my_py_music_box"]
+requires = [
+  "PyQt5>=5.15",
+  "numpy>=1.24",
+  "sounddevice>=0.4",
+]
+
+[tool.briefcase.app.my-py-music-box.macOS]
+[tool.briefcase.app.my-py-music-box.windows]
+[tool.briefcase.app.my-py-music-box.linux]
