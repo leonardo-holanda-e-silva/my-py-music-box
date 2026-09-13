@@ -127,9 +127,10 @@ uv run my-py-music-box</code></pre>
       <li><strong>Deb:</strong> install it with your distribution’s package manager, then open <strong>My Py Music Box</strong> from the applications menu.</li>
     </ul>
     <p>Without a package (from source), in a terminal, in the project folder:</p>
-    <pre><code>uv sync
+    <pre><code>sudo apt install libportaudio2
+uv sync
 uv run my-py-music-box</code></pre>
-    <p>If audio fails to open, install the system PortAudio library (for example <code>libportaudio2</code> on Debian/Ubuntu).</p>
+    <p>On WSL, Python does not ship PortAudio. Without <code>libportaudio2</code> the app cannot open audio. The uv <code>hardlink</code> warning on <code>/mnt/c</code> is safe to ignore, or set <code>export UV_LINK_MODE=copy</code>.</p>
 
     <h2>From source (any system)</h2>
     <ol>

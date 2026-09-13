@@ -1,20 +1,39 @@
 from __future__ import annotations
 
 import contextlib
+from types import ModuleType
 
 import numpy as np
-import sounddevice as sd
 
 from my_py_music_box.audio.bank import SAMPLE_RATE
 from my_py_music_box.audio.mixer import render, samples_per_step
 from my_py_music_box.score.model import Score
+
+_SOUNDDEVICE: ModuleType | None = None
+_PORTAUDIO_HINT = (
+    "PortAudio library not found. On Debian, Ubuntu, or WSL install it with:\n"
+    "  sudo apt install libportaudio2\n"
+    "Then run the app again. On Windows, run from PowerShell instead of WSL; "
+    "the Windows wheel already includes PortAudio."
+)
+
+
+def _sounddevice() -> ModuleType:
+    global _SOUNDDEVICE
+    if _SOUNDDEVICE is None:
+        try:
+            import sounddevice as sd
+        except OSError as exc:
+            raise RuntimeError(_PORTAUDIO_HINT) from exc
+        _SOUNDDEVICE = sd
+    return _SOUNDDEVICE
 
 
 class Engine:
     """Non-blocking playback of a rendered score via sounddevice."""
 
     def __init__(self) -> None:
-        self._stream: sd.OutputStream | None = None
+        self._stream = None
         self._buffer = np.zeros(0, dtype=np.float32)
         self._pos = 0
         self._paused = False
@@ -48,6 +67,7 @@ class Engine:
         return step
 
     def play(self, score: Score) -> None:
+        sd = _sounddevice()
         self.stop()
         self._buffer = render(score)
         self._sps = samples_per_step(score)
@@ -86,13 +106,15 @@ class Engine:
         self._paused = False
         self._pos = 0
         self._buffer = np.zeros(0, dtype=np.float32)
-        if stream is not None:
-            with contextlib.suppress(OSError, sd.PortAudioError):
-                stream.abort()
-            with contextlib.suppress(OSError, sd.PortAudioError):
-                stream.stop()
-            with contextlib.suppress(OSError, sd.PortAudioError):
-                stream.close()
+        sd = _SOUNDDEVICE
+        if stream is None or sd is None:
+            return
+        with contextlib.suppress(OSError, sd.PortAudioError):
+            stream.abort()
+        with contextlib.suppress(OSError, sd.PortAudioError):
+            stream.stop()
+        with contextlib.suppress(OSError, sd.PortAudioError):
+            stream.close()
 
     def finished(self) -> bool:
         if self._paused or self._buffer.size == 0:
@@ -102,6 +124,7 @@ class Engine:
         return bool(self._stream is not None and not self._stream.active and self._pos > 0)
 
     def _callback(self, outdata, frames, _time, _status) -> None:
+        sd = _sounddevice()
         pos = self._pos
         buf = self._buffer
         remaining = len(buf) - pos

@@ -127,9 +127,10 @@ uv run my-py-music-box</code></pre>
       <li><strong>Deb:</strong> instale com o gerenciador de pacotes da sua distribuição e abra <strong>My Py Music Box</strong> no menu de aplicativos.</li>
     </ul>
     <p>Sem pacote (código-fonte), no terminal, na pasta do projeto:</p>
-    <pre><code>uv sync
+    <pre><code>sudo apt install libportaudio2 libxcb-cursor0 libxcb-xinerama0 libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0
+uv sync
 uv run my-py-music-box</code></pre>
-    <p>Se o áudio não abrir, instale a biblioteca PortAudio do sistema (por exemplo <code>libportaudio2</code> no Debian/Ubuntu).</p>
+    <p>No WSL o Python não traz o PortAudio, e o Qt precisa das bibliotecas <code>xcb</code> do sistema. Sem elas o app falha ao abrir a janela. O aviso do uv sobre <code>hardlink</code> em <code>/mnt/c</code> pode ser ignorado, ou use <code>export UV_LINK_MODE=copy</code>. Se a janela ainda não abrir, rode no PowerShell do Windows em vez do WSL.</p>
 
     <h2>A partir do código-fonte (qualquer sistema)</h2>
     <ol>

@@ -27,6 +27,12 @@ uv sync
 uv run my-py-music-box
 ```
 
+On Linux and WSL, also install PortAudio and the Qt xcb libraries:
+
+```bash
+sudo apt install libportaudio2 libxcb-cursor0 libxcb-xinerama0 libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0
+```
+
 Tests:
 
 ```bash
