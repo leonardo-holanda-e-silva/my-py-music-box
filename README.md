@@ -1,43 +1,45 @@
 # My Py Music Box
 
-Aplicativo desktop que emula uma caixinha de música clássica de **21 dentes** de aço.
+Desktop app that emulates a classic **21-tine** steel music box.
 
-Três páginas:
+Three pages:
 
-- **Play** — executa uma partitura
-- **Composer** — cria e edita o cilindro (pinos)
-- **Settings** — preferências do app
+- **Play** — plays a score
+- **Composer** — creates and edits the cylinder (pins)
+- **Settings** — app preferences
 
-Software de **código aberto** (licença [MIT](LICENSE)).  
-Propriedade de **[LHES Tech Solutions](https://lhes.tech)**.
+**Open-source** software ([MIT](LICENSE) license).  
+Owned by **[LHES Tech Solutions](https://lhes.tech)**.
 
-Identidade visual: [`branding/PALETTE.md`](branding/PALETTE.md).
+Visual identity: [`branding/PALETTE.md`](branding/PALETTE.md).
 
-## Requisitos
+End-user run instructions: [English](README.html) · [Português](LEIAME.html).
+
+## Requirements
 
 - Python 3.11+
 - [uv](https://docs.astral.sh/uv/)
 
-## Desenvolvimento
+## Development
 
 ```bash
 uv sync
 uv run my-py-music-box
 ```
 
-Testes:
+Tests:
 
 ```bash
 uv run pytest
 ```
 
-## Documentação (SDD)
+## Documentation (SDD)
 
-Comece por [`docs/sdd/00-overview.md`](docs/sdd/00-overview.md).
+Start with [`docs/sdd/00-overview.md`](docs/sdd/00-overview.md).
 
-## Empacotamento
+## Packaging
 
-Ver [`docs/sdd/05-infrastructure.md`](docs/sdd/05-infrastructure.md) e [`docs/sdd/06-packaging.md`](docs/sdd/06-packaging.md).
+See [`docs/sdd/05-infrastructure.md`](docs/sdd/05-infrastructure.md) and [`docs/sdd/06-packaging.md`](docs/sdd/06-packaging.md).
 
 ```bash
 uv sync --group packaging

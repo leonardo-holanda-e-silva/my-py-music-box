@@ -1,31 +1,31 @@
-# SDD-03 — Página Composer
+# SDD-03 — Composer page
 
 **ID:** `page.composer`  
-**Pacote:** `my_py_music_box.ui.pages.composer`
+**Package:** `my_py_music_box.ui.pages.composer`
 
-## Propósito
+## Purpose
 
-Criar e editar o cilindro: pinos, passos, BPM da peça.
+Create and edit the cylinder: pins, steps, piece BPM.
 
-## Conteúdo da tela
+## Screen content
 
-- Grade 21 × N (dente × passo), editável
-- Contador de pinos
-- Campos: passos, BPM da partitura
-- Botões: Novo, Abrir, Salvar, Salvar como, Exemplo, Limpar
-- Pré-escuta curta de um dente ao clicar no rótulo da linha (opcional na v0.1; tarefa própria)
+- 21 × N grid (tine × step), editable
+- Pin counter
+- Fields: steps, score BPM
+- Buttons: New, Open, Save, Save as, Example, Clear
+- Short preview of a tine when clicking the row label (optional in v0.1; separate task)
 
-## Comportamento
+## Behavior
 
-- Clique na célula: toggle do pino
-- Alterar `steps` descarta pinos com `step >= steps`
-- Sujo (unsaved) bloqueia “Novo” até confirmar
-- Salvar escreve `caixa-musica-v1` via ScoreStore
-- Play não é responsabilidade desta página; “Testar” pode mandar o score em memória para o Engine **sem** gravar disco (tarefa `T-04`)
+- Click a cell: toggle the pin
+- Changing `steps` drops pins with `step >= steps`
+- Dirty (unsaved) blocks “New” until confirmed
+- Save writes `caixa-musica-v1` via ScoreStore
+- Play is not this page’s job; “Test” may send the in-memory score to the Engine **without** writing to disk (task `T-04`)
 
-## Critérios de pronto
+## Done when
 
-- [ ] Toggle de pino
-- [ ] Round-trip JSON (salvar / abrir idêntico em pinos e metadados)
-- [ ] Exemplo carrega a melodia de `examples/`
-- [ ] Título da janela indica arquivo sujo com `*`
+- [ ] Pin toggle
+- [ ] JSON round-trip (save / open identical pins and metadata)
+- [ ] Example loads the melody from `examples/`
+- [ ] Window title marks a dirty file with `*`

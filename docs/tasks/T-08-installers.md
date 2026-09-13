@@ -1,7 +1,7 @@
-# T-08 — Instaladores
+# T-08 — Installers
 
 **SDD:** 06  
 **Status:** todo
 
-Briefcase nas três plataformas + workflow GitHub Actions que publica artefatos.
-Ícone em `packaging/`. Assinatura de código fica TBD.
+Briefcase on all three platforms + GitHub Actions workflow that publishes artifacts.
+Icon in `packaging/`. Code signing remains TBD.

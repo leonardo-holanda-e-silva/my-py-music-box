@@ -1,8 +1,8 @@
 # Packaging assets
 
-Ícones e notas do Briefcase ficam aqui.
+Briefcase icons and notes live here.
 
-O `.gitignore` do repositório ignora `*.spec` do PyInstaller e as pastas `dist/` e `build/`.
-Não commitar binários de instalador.
+The repository `.gitignore` ignores PyInstaller `*.spec` files and the `dist/` and `build/` folders.
+Do not commit installer binaries.
 
-Ver `docs/sdd/06-packaging.md`.
+See `docs/sdd/06-packaging.md`.

@@ -1,43 +1,43 @@
-# SDD-06 — Instaladores Windows, macOS e Linux
+# SDD-06 — Windows, macOS, and Linux installers
 
-## Meta
+## Goal
 
-Um usuário sem Python instalado consegue instalar e abrir **My Py Music Box**.
+A user without Python installed can install and open **My Py Music Box**.
 
-## Ferramenta
+## Tool
 
-[Briefcase](https://briefcase.readthedocs.io/) (BeeWare), declarado no grupo `packaging` do `pyproject.toml`.
+[Briefcase](https://briefcase.readthedocs.io/) (BeeWare), declared in the `packaging` group of `pyproject.toml`.
 
-Motivo: um fluxo para as três plataformas; metadados já no `pyproject.toml`.  
-PyInstaller fica de reserva se o Briefcase travar no áudio PortAudio. Os `*.spec` do PyInstaller **não** devem ser commitados — o `.gitignore` do repo já ignora `*.spec`.
+Reason: one flow for all three platforms; metadata already lives in `pyproject.toml`.  
+PyInstaller is a fallback if Briefcase stalls on PortAudio. PyInstaller `*.spec` files **must not** be committed — the repo `.gitignore` already ignores `*.spec`.
 
-## Artefatos alvo
+## Target artifacts
 
-| SO | Comando | Artefato |
+| OS | Command | Artifact |
 |---|---|---|
-| Windows | `uv run briefcase package windows` | `.msi` ou `.exe` |
+| Windows | `uv run briefcase package windows` | `.msi` or `.exe` |
 | macOS | `uv run briefcase package macOS` | `.dmg` |
-| Linux | `uv run briefcase package linux` | `.AppImage` ou `.deb` |
+| Linux | `uv run briefcase package linux` | `.AppImage` or `.deb` |
 
-Ícone e identificador: `dev.leonardo.mypymusicbox` (ajustável).
+Icon and identifier: `dev.leonardo.mypymusicbox` (adjustable).
 
-## CI (tarefa T-08)
+## CI (task T-08)
 
-GitHub Actions com 3 jobs (`windows-latest`, `macos-latest`, `ubuntu-latest`):
+GitHub Actions with 3 jobs (`windows-latest`, `macos-latest`, `ubuntu-latest`):
 
 1. `astral-sh/setup-uv`
 2. `uv sync --group packaging`
 3. `briefcase create && build && package`
-4. Upload do artefato no Release
+4. Upload the artifact on the Release
 
-Assinatura de código (Apple / Authenticode) é TBD; v0.1 pode distribuir sem assinatura, com aviso no README.
+Code signing (Apple / Authenticode) is TBD; v0.1 may ship unsigned, with a note in the README.
 
-## Runtime empacotado
+## Packaged runtime
 
-O bundle precisa incluir:
+The bundle must include:
 
 - Python + PyQt5
 - NumPy
-- sounddevice **e** a lib PortAudio do wheel
+- sounddevice **and** the PortAudio lib from the wheel
 
-Teste de aceitação do instalador: abrir o app, carregar `examples/exemplo.caixa.json`, apertar Play e ouvir som.
+Installer acceptance test: open the app, load `examples/example.caixa.json`, press Play, and hear sound.

@@ -1,4 +1,4 @@
-"""Tokens visuais — ver branding/PALETTE.md."""
+"""Visual tokens — see branding/PALETTE.md."""
 
 INK = "#1A1423"
 ATELIER = "#2B1B33"

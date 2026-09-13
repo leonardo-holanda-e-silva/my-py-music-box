@@ -1,7 +1,7 @@
-# T-07 — Lockfile uv
+# T-07 — uv lockfile
 
 **SDD:** 05  
 **Status:** todo
 
-Na máquina do maintainer: `uv lock` e commit de `uv.lock`.  
-README já descreve `uv sync` / `uv run`.
+On the maintainer machine: `uv lock` and commit `uv.lock`.  
+The README already describes `uv sync` / `uv run`.

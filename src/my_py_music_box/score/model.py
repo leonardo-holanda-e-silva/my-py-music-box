@@ -31,16 +31,16 @@ class Score:
 
     def validate(self) -> None:
         if not 8 <= self.steps <= 64:
-            raise ValueError("steps fora de 8–64")
+            raise ValueError("steps out of range 8–64")
         if not 30 <= self.bpm <= 180:
-            raise ValueError("bpm fora de 30–180")
+            raise ValueError("bpm out of range 30–180")
         seen: set[tuple[int, int]] = set()
         unique: list[Pin] = []
         for pin in self.pins:
             if not 0 <= pin.tooth < 21:
-                raise ValueError(f"tooth inválido: {pin.tooth}")
+                raise ValueError(f"invalid tooth: {pin.tooth}")
             if not 0 <= pin.step < self.steps:
-                raise ValueError(f"step inválido: {pin.step}")
+                raise ValueError(f"invalid step: {pin.step}")
             key = (pin.step, pin.tooth)
             if key not in seen:
                 seen.add(key)
@@ -63,7 +63,7 @@ class Score:
     @classmethod
     def from_dict(cls, data: dict) -> Score:
         if data.get("format") != FORMAT:
-            raise ValueError("format inválido")
+            raise ValueError("invalid format")
         pins = [Pin(int(item["step"]), int(item["tooth"])) for item in data.get("pins", [])]
         score = cls(
             steps=int(data.get("steps", 32)),

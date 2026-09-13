@@ -1,21 +1,21 @@
-# SDD-05 — Infraestrutura do código
+# SDD-05 — Code infrastructure
 
 ## Layout
 
 ```
 my-py-music-box/
   pyproject.toml          # uv + briefcase
-  uv.lock                 # gerar com `uv lock` e commitar
+  uv.lock                 # generate with `uv lock` and commit
   LICENSE                 # MIT
-  .gitignore              # template do repo
+  .gitignore              # repo template
   README.md
-  docs/sdd/               # este conjunto
+  docs/sdd/               # this set
   docs/tasks/
-  examples/               # partituras de exemplo
-  packaging/              # notas e assets de instalador
+  examples/               # sample scores
+  packaging/              # installer notes and assets
   src/my_py_music_box/
     app.py                # entrypoint
-    ui/shell.py           # janela + navegação
+    ui/shell.py           # window + navigation
     ui/pages/play.py
     ui/pages/composer.py
     ui/pages/settings.py
@@ -26,37 +26,37 @@ my-py-music-box/
   tests/
 ```
 
-## Coordenação com uv
+## Coordination with uv
 
-Fonte da verdade de dependências: `pyproject.toml`.
+Source of truth for dependencies: `pyproject.toml`.
 
 ```bash
-uv sync                     # cria .venv e instala
-uv lock                     # atualiza uv.lock
-uv run my-py-music-box      # sobe o app
+uv sync                     # creates .venv and installs
+uv lock                     # updates uv.lock
+uv run my-py-music-box      # starts the app
 uv run pytest
-uv add pacote               # runtime
-uv add --group dev pacote
+uv add package              # runtime
+uv add --group dev package
 uv add --group packaging briefcase
 ```
 
-Não usar `requirements.txt` como fonte. O arquivo antigo do protótipo foi aposentado.
+Do not use `requirements.txt` as the source. The old prototype file was retired.
 
-Python mínimo: 3.11.
+Minimum Python: 3.11.
 
-## Pacote
+## Package
 
-- Código importável em `src/my_py_music_box`
+- Importable code in `src/my_py_music_box`
 - Script: `my-py-music-box`
-- Testes não importam PyQt5 quando testam só score/áudio puro (quando possível)
+- Tests do not import PyQt5 when they only test pure score/audio (when possible)
 
-## Qualidade
+## Quality
 
-- Ruff no grupo `dev`
-- Pytest para validação do JSON e mixer
-- Sem rede em runtime
+- Ruff in the `dev` group
+- Pytest for JSON validation and the mixer
+- No network at runtime
 
-## O que o .gitignore já cobre
+## What .gitignore already covers
 
-O `.gitignore` do repositório é o template Python padrão (inclui `.venv`, `dist/`, `build/`, `*.spec` do PyInstaller).  
-`uv.lock` **não** está ignorado (a linha está comentada): o lock deve ser versionado.
+The repository `.gitignore` is the standard Python template (includes `.venv`, `dist/`, `build/`, PyInstaller `*.spec`).  
+`uv.lock` is **not** ignored (the line is commented out): the lock should be versioned.

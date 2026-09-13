@@ -15,4 +15,4 @@ def test_rejects_bad_format():
         Score.from_dict({"format": "nope", "pins": []})
     except ValueError:
         return
-    raise AssertionError("deveria rejeitar format")
+    raise AssertionError("should reject format")

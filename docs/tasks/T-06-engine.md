@@ -1,7 +1,7 @@
-# T-06 — Engine de áudio
+# T-06 — Audio engine
 
 **SDD:** 01  
 **Status:** todo
 
-Migrar a síntese do protótipo para `audio/bank.py` e `audio/engine.py`.  
-Mixer determinístico; teste de duração do buffer.
+Move prototype synthesis into `audio/bank.py` and `audio/engine.py`.  
+Deterministic mixer; buffer duration test.

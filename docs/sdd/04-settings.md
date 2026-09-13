@@ -1,39 +1,39 @@
-# SDD-04 — Página Settings
+# SDD-04 — Settings page
 
 **ID:** `page.settings`  
-**Pacote:** `my_py_music_box.ui.pages.settings`
+**Package:** `my_py_music_box.ui.pages.settings`
 
-A lista abaixo é o **mínimo viável**. Itens marcados TBD não entram na v0.1.
+The list below is the **minimum viable** set. Items marked TBD are not in v0.1.
 
-## v0.1 (definir e persistir)
+## v0.1 (define and persist)
 
-| Chave | Tipo | Padrão | Efeito |
+| Key | Type | Default | Effect |
 |---|---|---|---|
-| `volume` | 0–100 | 70 | Ganho na saída |
-| `audio_device` | id ou `"default"` | `"default"` | Device do sounddevice |
-| `last_score_path` | path ou null | null | Play/Composer reabrem |
-| `default_bpm` | 30–180 | 72 | Usado em partitura nova |
-| `default_steps` | 8–64 | 32 | Usado em partitura nova |
+| `volume` | 0–100 | 70 | Output gain |
+| `audio_device` | id or `"default"` | `"default"` | sounddevice device |
+| `last_score_path` | path or null | null | Play/Composer reopen |
+| `default_bpm` | 30–180 | 72 | Used for a new score |
+| `default_steps` | 8–64 | 32 | Used for a new score |
 
-Persistência: arquivo JSON em diretório de config do usuário  
-(`platformdirs` ou `QStandardPaths.AppConfigLocation` / `my-py-music-box/settings.json`).
+Persistence: JSON file in the user config directory  
+(`platformdirs` or `QStandardPaths.AppConfigLocation` / `my-py-music-box/settings.json`).
 
-## Depois (TBD)
+## Later (TBD)
 
-- Idioma da UI (pt / en)
-- Tema claro / escuro
-- Qualidade do pente (síntese vs samples gravados)
-- Continuar tocando ao trocar de página
-- Pasta padrão de partituras
+- UI language (pt / en)
+- Light / dark theme
+- Comb quality (synthesis vs recorded samples)
+- Keep playing when switching pages
+- Default scores folder
 
-## Comportamento
+## Behavior
 
-- Apply imediato para volume
-- Device só aplica no próximo Play (evita cortar o stream no meio)
-- Valores inválidos no arquivo de config caem no padrão, sem crash
+- Immediate apply for volume
+- Device applies on the next Play (avoids cutting the stream mid-note)
+- Invalid values in the config file fall back to defaults, without crashing
 
-## Critérios de pronto
+## Done when
 
-- [ ] Volume sobrevive a fechar e abrir o app
-- [ ] Device inválido volta para default e avisa
-- [ ] Página não importa Engine além de listar devices
+- [ ] Volume survives closing and reopening the app
+- [ ] Invalid device falls back to default and warns
+- [ ] Page does not import Engine except to list devices

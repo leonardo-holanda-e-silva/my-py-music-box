@@ -1,101 +1,101 @@
-# SDD-00 — Visão geral e ligação entre componentes
+# SDD-00 — Overview and how components connect
 
 **App:** My Py Music Box  
-**Versão do documento:** 0.1.0  
-**Status:** vigente  
+**Document version:** 0.1.0  
+**Status:** current  
 **Repo:** https://github.com/leonardo-holanda-e-silva/my-py-music-box
 
-Este arquivo é o mapa. Os demais SDD descrevem uma fatia. Se houver conflito, este overview + o contrato da partitura vencem.
+This file is the map. The other SDDs each describe one slice. If there is a conflict, this overview plus the score contract win.
 
-## 1. Objetivo
+## 1. Goal
 
-Emular o mecanismo de uma caixinha de música:
+Emulate the mechanism of a music box:
 
-- um **pente** de 21 dentes (alturas fixas)
-- um **cilindro** com pinos
-- rotação a um BPM constante
-- som metálico de lâmina, não piano nem sample orquestral
+- a **comb** of 21 tines (fixed pitches)
+- a **cylinder** with pins
+- rotation at a constant BPM
+- metallic tine sound, not piano or orchestral samples
 
-O usuário entra por três páginas: Play, Composer, Settings.
+The user enters through three pages: Play, Composer, Settings.
 
-## 2. Não-objetivos (nesta versão)
+## 2. Non-goals (this version)
 
-- Mais de 21 alturas
-- Motor MIDI / SoundFont (pode virar backend depois, sem mudar o contrato)
-- Conta na nuvem ou sync
-- Notação clássica (pentagrama)
+- More than 21 pitches
+- MIDI / SoundFont engine (may become a backend later without changing the contract)
+- Cloud account or sync
+- Classical notation (staff)
 
-## 3. Mapa de documentos
+## 3. Document map
 
-| Arquivo | Responsabilidade |
+| File | Responsibility |
 |---|---|
-| [00-overview.md](00-overview.md) | Ligação, limites, fluxo |
-| [01-domain.md](01-domain.md) | Pente, cilindro, partitura |
-| [02-play.md](02-play.md) | Página Play |
-| [03-composer.md](03-composer.md) | Página Composer |
-| [04-settings.md](04-settings.md) | Página Settings |
-| [05-infrastructure.md](05-infrastructure.md) | Pacote Python, uv, testes |
-| [06-packaging.md](06-packaging.md) | Instaladores Win / macOS / Linux |
-| [../tasks/README.md](../tasks/README.md) | Fila de tarefas ligadas aos SDD |
+| [00-overview.md](00-overview.md) | Connections, limits, flow |
+| [01-domain.md](01-domain.md) | Comb, cylinder, score |
+| [02-play.md](02-play.md) | Play page |
+| [03-composer.md](03-composer.md) | Composer page |
+| [04-settings.md](04-settings.md) | Settings page |
+| [05-infrastructure.md](05-infrastructure.md) | Python package, uv, tests |
+| [06-packaging.md](06-packaging.md) | Win / macOS / Linux installers |
+| [../tasks/README.md](../tasks/README.md) | Task queue linked to the SDDs |
 
-## 4. Componentes e dependências
+## 4. Components and dependencies
 
 ```
                     ┌────────────┐
-                    │  Settings  │  preferências persistidas
+                    │  Settings  │  persisted preferences
                     └─────┬──────┘
-                          │ lê
+                          │ reads
 ┌─────────┐         ┌─────▼──────┐         ┌──────────┐
 │  Play   │────────▶│  Engine    │◀────────│ Composer │
-└─────────┘  toca   │  (áudio +  │  grava  └──────────┘
+└─────────┘  plays  │  (audio +  │  writes └──────────┘
                     │   score)   │
                     └─────┬──────┘
                           │
               ┌───────────┼───────────┐
               ▼           ▼           ▼
          AudioBank    ScoreStore   AudioOut
-         (21 dentes)  (JSON)       (sounddevice)
+         (21 tines)   (JSON)       (sounddevice)
 ```
 
-- **UI** (`src/my_py_music_box/ui`) — shell com 3 páginas; não sintetiza som.
-- **Score** (`src/my_py_music_box/score`) — lê/valida/grava `caixa-musica-v1`.
-- **Audio** (`src/my_py_music_box/audio`) — banco de 21 dentes + mixer + device.
-- **App** (`src/my_py_music_box/app.py`) — cria janela, carrega settings, roteia páginas.
+- **UI** (`src/my_py_music_box/ui`) — shell with 3 pages; does not synthesize sound.
+- **Score** (`src/my_py_music_box/score`) — reads / validates / writes `caixa-musica-v1`.
+- **Audio** (`src/my_py_music_box/audio`) — 21-tine bank + mixer + device.
+- **App** (`src/my_py_music_box/app.py`) — creates the window, loads settings, routes pages.
 
-Regras:
+Rules:
 
-1. Play e Composer **não** se conhecem. Os dois falam com Score + Engine.
-2. Settings **não** toca áudio. Só altera valores que Engine e UI lêem.
-3. A partitura no disco é a fonte da verdade da melodia. Estado da UI é descartável.
+1. Play and Composer **do not** know each other. Both talk to Score + Engine.
+2. Settings **does not** play audio. It only changes values that Engine and UI read.
+3. The score on disk is the source of truth for the melody. UI state is disposable.
 
-## 5. Fluxos
+## 5. Flows
 
-### Abrir e tocar
-Settings → último arquivo (se houver) → ScoreStore.load → Play.render → Engine.play
+### Open and play
+Settings → last file (if any) → ScoreStore.load → Play.render → Engine.play
 
-### Compor
-Composer edita pinos em memória → Save → ScoreStore.write → Play pode recarregar o mesmo arquivo
+### Compose
+Composer edits pins in memory → Save → ScoreStore.write → Play can reload the same file
 
-### Trocar página
-O shell troca o widget visível. O Engine para ao sair de Play, salvo se Settings definir “continuar em background” (não existe ainda; padrão = parar).
+### Switch page
+The shell swaps the visible widget. The Engine stops when leaving Play, unless Settings defines “keep playing in the background” (does not exist yet; default = stop).
 
 ## 6. Stack
 
-| Camada | Escolha |
+| Layer | Choice |
 |---|---|
-| Linguagem | Python ≥ 3.11 |
+| Language | Python ≥ 3.11 |
 | UI | PyQt5 |
-| Áudio | NumPy + sounddevice |
-| Projeto / lock | **uv** (`pyproject.toml` + `uv.lock`) |
-| Empacote | Briefcase (ver SDD-06) |
-| Licença | MIT — código aberto, propriedade da LHES Tech Solutions (https://lhes.tech) |
+| Audio | NumPy + sounddevice |
+| Project / lock | **uv** (`pyproject.toml` + `uv.lock`) |
+| Packaging | Briefcase (see SDD-06) |
+| License | MIT — open source, owned by LHES Tech Solutions (https://lhes.tech) |
 | Visual | `branding/PALETTE.md` + `ui/theme.py` |
 
-A descrição antiga do GitHub cita Tkinter. A implementação vigente é **PyQt5**.
+The old GitHub description mentions Tkinter. The current implementation is **PyQt5**.
 
-## 7. Como usar estes docs numa conversa
+## 7. How to use these docs in a conversation
 
-1. Abrir este overview.
-2. Abrir o SDD da página ou da infra em discussão.
-3. Abrir a tarefa em `docs/tasks/` se houver ID.
-4. Só então ler o `.py` correspondente.
+1. Open this overview.
+2. Open the SDD for the page or infra under discussion.
+3. Open the task in `docs/tasks/` if there is an ID.
+4. Only then read the matching `.py` file.

@@ -3,4 +3,4 @@
 **SDD:** 04  
 **Status:** todo
 
-Persistir volume, device, last_score_path, default_bpm, default_steps.
+Persist volume, device, last_score_path, default_bpm, default_steps.

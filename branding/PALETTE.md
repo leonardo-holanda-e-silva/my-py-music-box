@@ -1,33 +1,33 @@
-# Identidade visual — My Py Music Box
+# Visual identity — My Py Music Box
 
-Software de **código aberto** (licença MIT).  
-Propriedade: **LHES Tech Solutions** — [lhes.tech](https://lhes.tech)
+**Open-source** software (MIT license).  
+Owner: **LHES Tech Solutions** — [lhes.tech](https://lhes.tech)
 
-Inspiração: atelier noturno, folha de ouro, latão do cilindro, madeira envelhecida, papel de partitura.
+Inspiration: night atelier, gold leaf, cylinder brass, aged wood, score paper.
 
-## Paleta
+## Palette
 
-| Token | Hex | Uso |
+| Token | Hex | Use |
 |---|---|---|
-| `ink` | `#1A1423` | fundo da janela, chrome |
-| `atelier` | `#2B1B33` | painéis, grade |
-| `plum` | `#4A2545` | hover, navegação inativa |
-| `oxblood` | `#7A2E3A` | alerta, estado sujo |
-| `brass` | `#C4A35A` | pinos, playhead, botão primário |
-| `gold` | `#E6C97A` | ênfase, ícone ativo |
-| `ivory` | `#F4EBD0` | texto principal |
-| `score` | `#C9B896` | texto secundário |
-| `verdigris` | `#2F6F6B` | sucesso, “salvo” |
+| `ink` | `#1A1423` | window background, chrome |
+| `atelier` | `#2B1B33` | panels, grid |
+| `plum` | `#4A2545` | hover, inactive navigation |
+| `oxblood` | `#7A2E3A` | alert, dirty state |
+| `brass` | `#C4A35A` | pins, playhead, primary button |
+| `gold` | `#E6C97A` | emphasis, active icon |
+| `ivory` | `#F4EBD0` | primary text |
+| `score` | `#C9B896` | secondary text |
+| `verdigris` | `#2F6F6B` | success, “saved” |
 
-Não usar azul de sistema, cinza neutro de IDE, nem verde lima.  
-Tipografia da UI: serifada para títulos (Georgia / Palatino), sans para controles.
+Do not use system blue, IDE-neutral gray, or lime green.  
+UI typography: serif for titles (Georgia / Palatino), sans for controls.
 
-## Marcas
+## Marks
 
-- `logo-mark.jpg` — ícone (caixinha + pentagrama em espiral)
-- `logo-lockup.jpg` — marca com nome + “an LHES Tech Solutions work”
+- `logo-mark.jpg` — icon (music box + spiral staff)
+- `logo-lockup.jpg` — wordmark with name + “an LHES Tech Solutions work”
 
-Rodapé obrigatório em Settings e no README:
+Required footer on Settings and in the README:
 
 > My Py Music Box is open-source software.  
 > © LHES Tech Solutions · [lhes.tech](https://lhes.tech)

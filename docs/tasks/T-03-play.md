@@ -1,6 +1,6 @@
-# T-03 — Página Play
+# T-03 — Play page
 
 **SDD:** 02  
 **Status:** todo
 
-Abrir partitura, Tocar / Parar, playhead somente leitura. Depende de T-02 e T-06.
+Open a score, Play / Stop, read-only playhead. Depends on T-02 and T-06.

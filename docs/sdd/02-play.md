@@ -1,39 +1,39 @@
-# SDD-02 — Página Play
+# SDD-02 — Play page
 
 **ID:** `page.play`  
-**Pacote:** `my_py_music_box.ui.pages.play`
+**Package:** `my_py_music_box.ui.pages.play`
 
-## Propósito
+## Purpose
 
-Executar uma partitura já existente. Não é o editor.
+Play an existing score. This is not the editor.
 
-## Conteúdo da tela
+## Screen content
 
-- Nome do arquivo aberto (ou “nenhuma partitura”)
-- Controles: Tocar / Pausar / Parar
-- Playhead sobre uma **vista somente leitura** do cilindro
-- BPM e volume efetivos (herdados da partitura + Settings; volume sempre de Settings)
-- Atalho “Abrir no Composer” (troca de página com o mesmo score)
+- Name of the open file (or “no score”)
+- Controls: Play / Pause / Stop
+- Playhead over a **read-only** view of the cylinder
+- Effective BPM and volume (inherited from the score + Settings; volume always comes from Settings)
+- Shortcut “Open in Composer” (switches page with the same score)
 
-## Comportamento
+## Behavior
 
-| Ação | Resultado |
+| Action | Result |
 |---|---|
-| Tocar sem arquivo | Mensagem; não inicia stream |
-| Tocar | Engine renderiza e dispara `sounddevice` |
-| Parar | Fecha stream; playhead some |
-| Trocar para Composer | Para a reprodução |
-| Arquivo muda no disco | Não recarrega sozinho; botão Recarregar |
+| Play with no file | Message; does not start a stream |
+| Play | Engine renders and starts `sounddevice` |
+| Stop | Closes the stream; playhead disappears |
+| Switch to Composer | Stops playback |
+| File changes on disk | Does not reload by itself; Reload button |
 
-## Fora de escopo desta página
+## Out of scope for this page
 
-- Clicar para cravar pino
-- Criar partitura nova
-- Escolher device (isso é Settings)
+- Clicking to place a pin
+- Creating a new score
+- Choosing a device (that is Settings)
 
-## Critérios de pronto
+## Done when
 
-- [ ] Abre um `.caixa.json` válido e toca
-- [ ] Rejeita JSON inválido sem crash
-- [ ] Playhead acompanha o passo corrente
-- [ ] Stop é imediato
+- [ ] Opens a valid `.caixa.json` and plays it
+- [ ] Rejects invalid JSON without crashing
+- [ ] Playhead follows the current step
+- [ ] Stop is immediate

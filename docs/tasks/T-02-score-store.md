@@ -3,5 +3,5 @@
 **SDD:** 01  
 **Status:** todo
 
-`score/model.py` + `score/store.py` com load/save/validate.  
-Testes em `tests/test_score.py` cobrindo JSON válido, dente fora do intervalo e format errado.
+`score/model.py` + `score/store.py` with load/save/validate.  
+Tests in `tests/test_score.py` covering valid JSON, tooth out of range, and wrong format.
