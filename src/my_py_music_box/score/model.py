@@ -64,7 +64,16 @@ class Score:
     def from_dict(cls, data: dict) -> Score:
         if data.get("format") != FORMAT:
             raise ValueError("invalid format")
-        pins = [Pin(int(item["step"]), int(item["tooth"])) for item in data.get("pins", [])]
+        pins: list[Pin] = []
+        for item in data.get("pins", []):
+            tooth = int(item["tooth"])
+            if not 0 <= tooth < 21:
+                raise ValueError(f"invalid tooth: {tooth}")
+            pin = Pin(int(item["step"]), tooth)
+            note = item.get("note")
+            if note is not None and note != pin.note:
+                raise ValueError(f"note {note!r} does not match tooth {tooth}")
+            pins.append(pin)
         score = cls(
             steps=int(data.get("steps", 32)),
             bpm=int(data.get("bpm", 72)),

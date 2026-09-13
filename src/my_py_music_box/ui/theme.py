@@ -38,4 +38,19 @@ QStatusBar {{
     background: {ATELIER};
     color: {SCORE};
 }}
+QScrollArea {{
+    border: 1px solid {BRASS};
+    background: {ATELIER};
+}}
+QSlider::groove:horizontal {{
+    height: 6px;
+    background: {PLUM};
+    border-radius: 3px;
+}}
+QSlider::handle:horizontal {{
+    width: 14px;
+    margin: -5px 0;
+    background: {GOLD};
+    border-radius: 7px;
+}}
 """

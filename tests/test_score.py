@@ -1,4 +1,4 @@
-from my_py_music_box.score.model import Score, Pin
+from my_py_music_box.score.model import Pin, Score
 
 
 def test_round_trip():
@@ -8,6 +8,20 @@ def test_round_trip():
     assert again.steps == 16
     assert again.bpm == 60
     assert [(p.step, p.tooth) for p in again.pins] == [(0, 3), (4, 7)]
+
+
+def test_rejects_mismatched_note():
+    try:
+        Score.from_dict(
+            {
+                "format": "caixa-musica-v1",
+                "steps": 8,
+                "pins": [{"step": 0, "tooth": 3, "note": "G4"}],
+            }
+        )
+    except ValueError:
+        return
+    raise AssertionError("should reject mismatched note")
 
 
 def test_rejects_bad_format():
