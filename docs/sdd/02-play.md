@@ -21,6 +21,8 @@ Play an existing score. This is not the editor.
 |---|---|
 | Play with no file | Message; does not start a stream |
 | Play | Engine renders and starts `sounddevice` |
+| Playhead leaves the visible cylinder | The view scrolls so the current step stays on screen |
+| Stop | Closes the stream; playhead disappears |
 | Stop | Closes the stream; playhead disappears |
 | Switch to Composer | Stops playback |
 | File changes on disk | Does not reload by itself; Reload button |
@@ -36,4 +38,5 @@ Play an existing score. This is not the editor.
 - [ ] Opens a valid `.caixa.json` and plays it
 - [ ] Rejects invalid JSON without crashing
 - [ ] Playhead follows the current step
+- [ ] Viewport follows the playhead when it would leave the visible area (task `T-09`)
 - [ ] Stop is immediate

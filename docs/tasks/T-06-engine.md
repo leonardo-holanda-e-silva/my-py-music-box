@@ -1,7 +1,7 @@
 # T-06 — Audio engine
 
 **SDD:** 01  
-**Status:** todo
+**Status:** done
 
-Move prototype synthesis into `audio/bank.py` and `audio/engine.py`.  
-Deterministic mixer; buffer duration test.
+Tine synthesis in `audio/bank.py`, mix in `audio/mixer.py`, playback in `audio/engine.py`.  
+Deterministic mixer; buffer duration test in `tests/test_engine.py`.
