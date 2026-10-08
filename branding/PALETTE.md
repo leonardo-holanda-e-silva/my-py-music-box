@@ -3,29 +3,26 @@
 **Open-source** software (MIT license).  
 Owner: **LHES Tech Solutions** — [lhes.tech](https://lhes.tech)
 
-Inspiration: night atelier, gold leaf, cylinder brass, aged wood, score paper.
+Inspiration: Python snake in a music box — navy chest, gold keyhole and notes, cream field.
 
 ## Palette
 
 | Token | Hex | Use |
 |---|---|---|
-| `ink` | `#1A1423` | window background, chrome |
-| `atelier` | `#2B1B33` | panels, grid |
-| `plum` | `#4A2545` | hover, inactive navigation |
-| `oxblood` | `#7A2E3A` | alert, dirty state |
-| `brass` | `#C4A35A` | pins, playhead, primary button |
-| `gold` | `#E6C97A` | emphasis, active icon |
-| `ivory` | `#F4EBD0` | primary text |
-| `score` | `#C9B896` | secondary text |
-| `verdigris` | `#2F6F6B` | success, “saved” |
+| `cream` | `#FCF9F0` | window / screen background |
+| `navy` | `#0F2D52` | chrome, primary text, cylinder grid |
+| `gold` | `#F9B31E` | pins, playhead, primary button, accents |
+| `panel` | `#E8E2D4` | panels, list rows |
+| `muted` | `#5A6B7D` | secondary text |
+| `alert` | `#A33B3B` | error / dirty state |
+| `ok` | `#2F6F6B` | success / saved |
 
 Do not use system blue, IDE-neutral gray, or lime green.  
-UI typography: serif for titles (Georgia / Palatino), sans for controls.
+UI typography: sans for controls (Roboto / system); display titles may use a clear sans or serif.
 
 ## Marks
 
-- `logo-mark.jpg` — icon (music box + spiral staff)
-- `logo-lockup.jpg` — wordmark with name + “an LHES Tech Solutions work”
+- `logo-mark.jpg` — app icon (Python snake + music box + notes)
 
 Required footer on Settings and in the README:
 

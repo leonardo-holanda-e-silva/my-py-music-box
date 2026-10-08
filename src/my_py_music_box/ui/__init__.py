@@ -1,1 +1,1 @@
-# UI package
+"""Kivy UI package."""

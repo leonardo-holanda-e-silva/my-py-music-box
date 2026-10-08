@@ -1,57 +1,49 @@
 # My Py Music Box
 
-Desktop app that emulates a classic **21-tine** steel music box.
+POC mobile app (Kivy) that emulates a classic **21-tine** music box.
 
-Three pages:
+Pages: **Library**, **Play**, **Composer**, **Settings**.
 
-- **Play** — plays a score
-- **Composer** — creates and edits the cylinder (pins)
-- **Settings** — app preferences
+Scores live in **SQLite**. Import/export uses `.caixa.json` (`caixa-musica-v1`).
 
-**Open-source** software ([MIT](LICENSE) license).  
-Owned by **[LHES Tech Solutions](https://lhes.tech)**.
+**Open-source** ([MIT](LICENSE)). Owned by **[LHES Tech Solutions](https://lhes.tech)**.
 
 Visual identity: [`branding/PALETTE.md`](branding/PALETTE.md).
-
-End-user run instructions: [English](README.html) · [Português](LEIAME.html).
 
 ## Requirements
 
 - Python 3.11+
 - [uv](https://docs.astral.sh/uv/)
+- Android APK build: [Buildozer](https://buildozer.readthedocs.io/) on **Linux/WSL**
 
-## Development
+## Desktop smoke test
 
 ```bash
 uv sync
 uv run my-py-music-box
 ```
 
-On Linux and WSL, also install PortAudio and the Qt xcb libraries:
-
-```bash
-sudo apt install libportaudio2 libxcb-cursor0 libxcb-xinerama0 libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0
-```
-
-Tests:
+Tests (unit only):
 
 ```bash
 uv run pytest
 ```
 
-## Documentation (SDD)
-
-Start with [`docs/sdd/00-overview.md`](docs/sdd/00-overview.md).
-
-## Packaging
-
-See [`docs/sdd/05-infrastructure.md`](docs/sdd/05-infrastructure.md) and [`docs/sdd/06-packaging.md`](docs/sdd/06-packaging.md).
+## Android APK (WSL)
 
 ```bash
-uv sync --group packaging
-uv run briefcase create windows --no-input
-uv run briefcase build windows --no-input
-uv run briefcase package windows --no-input --adhoc-sign
+# once: install Buildozer deps on Ubuntu/WSL, then:
+pip install buildozer
+buildozer android debug
 ```
 
-The Windows installer is written to `dist/My Py Music Box-0.1.0.msi`.
+Install the APK from `bin/*.apk` on the phone.
+
+Built-in scores shipped in the APK:
+
+- Example
+- How Deep Is Your Love
+
+## Score format
+
+See [`docs/sdd/01-domain.md`](docs/sdd/01-domain.md) and `assets/scores/`.

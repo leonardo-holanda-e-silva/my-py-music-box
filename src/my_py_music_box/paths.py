@@ -1,30 +1,53 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
-EXAMPLE_SCORE_NAME = "How Deep Is Your Music Box.caixa.json"
+PACKAGE_ROOT = Path(__file__).resolve().parent
 
 
-def examples_dirs() -> list[Path]:
-    here = Path(__file__).resolve()
-    pkg = here.parent
-    return [
-        pkg.parent / "examples",
-        here.parents[2] / "examples",
-        Path.cwd() / "examples",
+def _project_root() -> Path:
+    # src/my_py_music_box -> src -> project
+    return PACKAGE_ROOT.parents[1]
+
+
+def assets_dir() -> Path:
+    """Bundled assets (scores, branding). Works in source tree and Buildozer."""
+    candidates = [
+        PACKAGE_ROOT / "assets",
+        _project_root() / "assets",
+        Path(sys.argv[0]).resolve().parent / "assets",
+        Path.cwd() / "assets",
     ]
-
-
-def examples_dir() -> Path | None:
-    for path in examples_dirs():
+    for path in candidates:
         if path.is_dir():
             return path
-    return None
+    return _project_root() / "assets"
 
 
-def example_score_path() -> Path | None:
-    for folder in examples_dirs():
-        candidate = folder / EXAMPLE_SCORE_NAME
+def scores_assets_dir() -> Path:
+    return assets_dir() / "scores"
+
+
+def logo_path() -> Path | None:
+    for candidate in (
+        assets_dir() / "branding" / "logo-mark.jpg",
+        _project_root() / "branding" / "logo-mark.jpg",
+    ):
         if candidate.is_file():
             return candidate
     return None
+
+
+def user_data_dir(app_user_data: str | Path | None = None) -> Path:
+    if app_user_data is not None:
+        path = Path(app_user_data)
+        path.mkdir(parents=True, exist_ok=True)
+        return path
+    path = Path.home() / ".my-py-music-box"
+    path.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def db_path(app_user_data: str | Path | None = None) -> Path:
+    return user_data_dir(app_user_data) / "app.db"

@@ -1,7 +1,7 @@
 [project]
 name = "my-py-music-box"
 version = "0.1.0"
-description = "Desktop app that emulates a classic 21-tine music box."
+description = "Mobile POC that emulates a classic 21-tine music box (Kivy + SQLite)."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -10,9 +10,8 @@ authors = [
 ]
 requires-python = ">=3.11"
 dependencies = [
-  "PyQt5==5.15.11",
+  "kivy>=2.3.0",
   "numpy>=1.24",
-  "sounddevice>=0.4",
 ]
 
 [project.urls]
@@ -23,9 +22,6 @@ Repository = "https://github.com/leonardo-holanda-e-silva/my-py-music-box"
 dev = [
   "pytest>=8.0",
   "ruff>=0.6",
-]
-packaging = [
-  "briefcase>=0.3.22",
 ]
 
 [project.scripts]
@@ -38,22 +34,16 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/my_py_music_box"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"src/my_py_music_box/assets" = "my_py_music_box/assets"
+
 [tool.uv]
 default-groups = ["dev"]
-required-environments = [
-  "sys_platform == 'win32' and platform_machine == 'AMD64'",
-  "sys_platform == 'linux' and platform_machine == 'x86_64'",
-  "sys_platform == 'darwin' and platform_machine == 'arm64'",
-  "sys_platform == 'darwin' and platform_machine == 'x86_64'",
-]
 
 [dependency-groups]
 dev = [
   "pytest>=8.0",
   "ruff>=0.6",
-]
-packaging = [
-  "briefcase>=0.3.22",
 ]
 
 [tool.ruff]
@@ -62,27 +52,3 @@ src = ["src", "tests"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-
-[tool.briefcase]
-project_name = "My Py Music Box"
-bundle = "dev.leonardo.mypymusicbox"
-version = "0.1.0"
-license = "MIT"
-"license-files" = ["LICENSE"]
-author = "LHES Tech Solutions"
-url = "https://lhes.tech"
-
-[tool.briefcase.app.my-py-music-box]
-formal_name = "My Py Music Box"
-description = "Emulate a classic 21-tine music box."
-icon = "packaging/icon"
-sources = ["src/my_py_music_box", "examples"]
-requires = [
-  "PyQt5==5.15.11",
-  "numpy>=1.24",
-  "sounddevice>=0.4",
-]
-
-[tool.briefcase.app.my-py-music-box.macOS]
-[tool.briefcase.app.my-py-music-box.windows]
-[tool.briefcase.app.my-py-music-box.linux]

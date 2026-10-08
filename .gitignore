@@ -217,5 +217,5 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Briefcase logs
-logs/
+# Local Briefcase build cache (installers cancelled)
+.briefcase/

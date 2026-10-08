@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import contextlib
-from types import ModuleType
+import os
+import tempfile
+import wave
+from pathlib import Path
 
 import numpy as np
 
@@ -9,37 +12,30 @@ from my_py_music_box.audio.bank import SAMPLE_RATE
 from my_py_music_box.audio.mixer import render, samples_per_step
 from my_py_music_box.score.model import Score
 
-_SOUNDDEVICE: ModuleType | None = None
-_PORTAUDIO_HINT = (
-    "PortAudio library not found. On Debian, Ubuntu, or WSL install it with:\n"
-    "  sudo apt install libportaudio2\n"
-    "Then run the app again. On Windows, run from PowerShell instead of WSL; "
-    "the Windows wheel already includes PortAudio."
-)
 
-
-def _sounddevice() -> ModuleType:
-    global _SOUNDDEVICE
-    if _SOUNDDEVICE is None:
-        try:
-            import sounddevice as sd
-        except OSError as exc:
-            raise RuntimeError(_PORTAUDIO_HINT) from exc
-        _SOUNDDEVICE = sd
-    return _SOUNDDEVICE
+def write_wav(path: str | Path, buffer: np.ndarray, sample_rate: int = SAMPLE_RATE) -> None:
+    """Write mono float32 buffer as 16-bit PCM WAV."""
+    clipped = np.clip(buffer, -1.0, 1.0)
+    pcm = (clipped * 32767.0).astype(np.int16)
+    with wave.open(str(path), "wb") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(2)
+        wf.setframerate(sample_rate)
+        wf.writeframes(pcm.tobytes())
 
 
 class Engine:
-    """Non-blocking playback of a rendered score via sounddevice."""
+    """Render a score to WAV and play it with Kivy SoundLoader."""
 
     def __init__(self) -> None:
-        self._stream = None
-        self._buffer = np.zeros(0, dtype=np.float32)
-        self._pos = 0
-        self._paused = False
+        self._sound = None
+        self._wav_path: Path | None = None
         self._volume = 0.7
         self._sps = 1
         self._steps = 0
+        self._paused = False
+        self._pause_pos = 0.0
+        self._duration = 0.0
 
     @property
     def volume(self) -> float:
@@ -48,12 +44,16 @@ class Engine:
     @volume.setter
     def volume(self, value: float) -> None:
         self._volume = float(np.clip(value, 0.0, 1.0))
+        if self._sound is not None:
+            self._sound.volume = self._volume
 
     def is_playing(self) -> bool:
-        return self._stream is not None and self._stream.active and not self._paused
+        if self._sound is None or self._paused:
+            return False
+        return bool(getattr(self._sound, "state", "") == "play")
 
     def is_paused(self) -> bool:
-        return self._paused and self._stream is not None
+        return self._paused and self._sound is not None
 
     def is_active(self) -> bool:
         return self.is_playing() or self.is_paused()
@@ -61,80 +61,88 @@ class Engine:
     def current_step(self) -> int | None:
         if not self.is_active() or self._sps <= 0:
             return None
-        step = self._pos // self._sps
+        if self._paused:
+            pos = self._pause_pos
+        elif self._sound is None:
+            return None
+        else:
+            try:
+                pos = float(self._sound.get_pos())
+            except Exception:
+                return None
+        sample = int(pos * SAMPLE_RATE)
+        step = sample // self._sps
         if step >= self._steps:
             return self._steps - 1 if self._steps else 0
         return step
 
-    def play(self, score: Score) -> None:
-        sd = _sounddevice()
+    def play(self, score: Score, device: str | None = None) -> str | None:
+        del device  # system output only on mobile
+        from kivy.core.audio import SoundLoader
+
         self.stop()
-        self._buffer = render(score)
+        buffer = render(score)
         self._sps = samples_per_step(score)
         self._steps = score.steps
-        self._pos = 0
+        self._duration = len(buffer) / float(SAMPLE_RATE)
         self._paused = False
-        try:
-            self._stream = sd.OutputStream(
-                samplerate=SAMPLE_RATE,
-                channels=1,
-                dtype="float32",
-                callback=self._callback,
-            )
-            self._stream.start()
-        except sd.PortAudioError as exc:
+        self._pause_pos = 0.0
+
+        fd, name = tempfile.mkstemp(suffix=".wav", prefix="mpmb_")
+        os.close(fd)
+        path = Path(name)
+        write_wav(path, buffer)
+        self._wav_path = path
+
+        sound = SoundLoader.load(str(path))
+        if sound is None:
             self.stop()
-            raise RuntimeError(str(exc)) from exc
+            raise RuntimeError("Could not load rendered audio (SoundLoader).")
+        sound.volume = self._volume
+        sound.play()
+        self._sound = sound
+        return None
 
     def pause(self) -> None:
-        if self._stream is None or self._paused:
+        if self._sound is None or self._paused:
             return
-        if self._stream.active:
-            self._stream.stop()
+        try:
+            self._pause_pos = float(self._sound.get_pos())
+        except Exception:
+            self._pause_pos = 0.0
+        if getattr(self._sound, "state", "") == "play":
+            self._sound.stop()
         self._paused = True
 
     def resume(self) -> None:
-        if self._stream is None or not self._paused:
+        if self._sound is None or not self._paused:
             return
         self._paused = False
-        if not self._stream.active:
-            self._stream.start()
+        # SoundLoader seek support varies; restart if seek unavailable.
+        with contextlib.suppress(Exception):
+            if hasattr(self._sound, "seek"):
+                self._sound.seek(self._pause_pos)
+        self._sound.play()
 
     def stop(self) -> None:
-        stream = self._stream
-        self._stream = None
+        sound = self._sound
+        self._sound = None
         self._paused = False
-        self._pos = 0
-        self._buffer = np.zeros(0, dtype=np.float32)
-        sd = _SOUNDDEVICE
-        if stream is None or sd is None:
-            return
-        with contextlib.suppress(OSError, sd.PortAudioError):
-            stream.abort()
-        with contextlib.suppress(OSError, sd.PortAudioError):
-            stream.stop()
-        with contextlib.suppress(OSError, sd.PortAudioError):
-            stream.close()
+        self._pause_pos = 0.0
+        self._steps = 0
+        self._duration = 0.0
+        if sound is not None:
+            with contextlib.suppress(Exception):
+                sound.stop()
+            with contextlib.suppress(Exception):
+                sound.unload()
+        if self._wav_path is not None:
+            with contextlib.suppress(OSError):
+                self._wav_path.unlink()
+            self._wav_path = None
 
     def finished(self) -> bool:
-        if self._paused or self._buffer.size == 0:
+        if self._paused or self._sound is None:
             return False
-        if self._pos >= len(self._buffer):
-            return True
-        return bool(self._stream is not None and not self._stream.active and self._pos > 0)
-
-    def _callback(self, outdata, frames, _time, _status) -> None:
-        sd = _sounddevice()
-        pos = self._pos
-        buf = self._buffer
-        remaining = len(buf) - pos
-        if remaining <= 0:
-            outdata.fill(0)
-            raise sd.CallbackStop
-        n = min(frames, remaining)
-        outdata[:n, 0] = buf[pos : pos + n] * self._volume
-        if n < frames:
-            outdata[n:].fill(0)
-            self._pos = pos + n
-            raise sd.CallbackStop
-        self._pos = pos + n
+        state = getattr(self._sound, "state", "")
+        return state == "stop" and self._duration > 0

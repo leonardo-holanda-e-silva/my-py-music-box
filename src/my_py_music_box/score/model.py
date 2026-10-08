@@ -3,6 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 FORMAT = "caixa-musica-v1"
+MIN_STEPS = 8
+MAX_STEPS = 1024
+MIN_BPM = 30
+MAX_BPM = 180
 
 NOTE_NAMES = [
     "G4", "A4", "B4",
@@ -30,10 +34,10 @@ class Score:
     pins: list[Pin] = field(default_factory=list)
 
     def validate(self) -> None:
-        if not 8 <= self.steps <= 64:
-            raise ValueError("steps out of range 8–64")
-        if not 30 <= self.bpm <= 180:
-            raise ValueError("bpm out of range 30–180")
+        if not MIN_STEPS <= self.steps <= MAX_STEPS:
+            raise ValueError(f"steps out of range {MIN_STEPS}–{MAX_STEPS}")
+        if not MIN_BPM <= self.bpm <= MAX_BPM:
+            raise ValueError(f"bpm out of range {MIN_BPM}–{MAX_BPM}")
         seen: set[tuple[int, int]] = set()
         unique: list[Pin] = []
         for pin in self.pins:
@@ -46,6 +50,27 @@ class Score:
                 seen.add(key)
                 unique.append(pin)
         self.pins = unique
+
+    def copy(self) -> Score:
+        return Score(
+            steps=self.steps,
+            bpm=self.bpm,
+            steps_per_beat=self.steps_per_beat,
+            pins=[Pin(pin.step, pin.tooth) for pin in self.pins],
+        )
+
+    def toggle_pin(self, step: int, tooth: int) -> None:
+        if not 0 <= step < self.steps or not 0 <= tooth < 21:
+            return
+        kept = [pin for pin in self.pins if not (pin.step == step and pin.tooth == tooth)]
+        if len(kept) == len(self.pins):
+            kept.append(Pin(step, tooth))
+        self.pins = kept
+
+    def set_steps(self, steps: int) -> None:
+        self.steps = steps
+        self.pins = [pin for pin in self.pins if pin.step < steps]
+        self.validate()
 
     def to_dict(self) -> dict:
         self.validate()

@@ -12,7 +12,6 @@ def load(path: str | Path) -> Score:
 
 
 def save(score: Score, path: str | Path) -> None:
-    Path(path).write_text(
-        json.dumps(score.to_dict(), indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(json.dumps(score.to_dict(), indent=2) + "\n", encoding="utf-8")

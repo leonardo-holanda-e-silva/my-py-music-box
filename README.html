@@ -6,149 +6,43 @@
   <title>My Py Music Box — How to run</title>
   <style>
     :root {
-      --ink: #1A1423;
-      --atelier: #2B1B33;
-      --plum: #4A2545;
-      --oxblood: #7A2E3A;
-      --brass: #C4A35A;
-      --gold: #E6C97A;
-      --ivory: #F4EBD0;
-      --score: #C9B896;
-      --verdigris: #2F6F6B;
+      --cream: #FCF9F0;
+      --navy: #0F2D52;
+      --gold: #F9B31E;
+      --muted: #5A6B7D;
+      --panel: #E8E2D4;
     }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--ink);
-      color: var(--ivory);
-      font-family: Georgia, Palatino, "Palatino Linotype", serif;
-      line-height: 1.55;
-    }
-    main {
-      max-width: 42rem;
-      margin: 0 auto;
-      padding: 2.5rem 1.25rem 4rem;
-    }
-    h1 {
-      font-size: 1.85rem;
-      font-weight: normal;
-      color: var(--gold);
-      margin: 0 0 0.35rem;
-    }
-    h2 {
-      font-size: 1.2rem;
-      font-weight: normal;
-      color: var(--brass);
-      border-bottom: 1px solid var(--plum);
-      padding-bottom: 0.35rem;
-      margin: 2rem 0 0.75rem;
-    }
-    p, li { color: var(--ivory); }
-    .lede { color: var(--score); margin-top: 0; }
-    .lang {
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-    .lang a { color: var(--gold); }
-    a { color: var(--gold); }
-    ol, ul { padding-left: 1.25rem; }
-    li { margin: 0.35rem 0; }
-    code, pre {
-      font-family: Consolas, "Cascadia Mono", "Segoe UI Mono", monospace;
-      font-size: 0.92em;
-    }
-    code {
-      background: var(--atelier);
-      color: var(--gold);
-      padding: 0.1em 0.35em;
-      border-radius: 3px;
-    }
-    pre {
-      background: var(--atelier);
-      border: 1px solid var(--plum);
-      color: var(--ivory);
-      padding: 0.9rem 1rem;
-      overflow-x: auto;
-      border-radius: 4px;
-    }
-    pre code { background: none; padding: 0; color: inherit; }
-    .note {
-      background: var(--atelier);
-      border-left: 3px solid var(--brass);
-      padding: 0.75rem 1rem;
-      color: var(--score);
-    }
-    footer {
-      margin-top: 3rem;
-      color: var(--score);
-      font-size: 0.9rem;
-    }
+    body { margin: 0; background: var(--cream); color: var(--navy); font-family: system-ui, sans-serif; line-height: 1.55; }
+    main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    h1 { color: var(--navy); font-size: 1.85rem; }
+    h2 { color: var(--navy); border-bottom: 1px solid var(--panel); padding-bottom: 0.35rem; margin: 2rem 0 0.75rem; }
+    a { color: var(--navy); text-decoration-color: var(--gold); }
+    .lede { color: var(--muted); }
+    code, pre { font-family: Consolas, monospace; font-size: 0.92em; }
+    code { background: var(--panel); padding: 0.1em 0.35em; border-radius: 3px; }
+    pre { background: var(--panel); padding: 0.9rem 1rem; overflow-x: auto; border-radius: 4px; }
+    footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
   </style>
 </head>
 <body>
   <main>
     <p class="lang">English · <a href="LEIAME.html">Português (BR)</a></p>
     <h1>My Py Music Box</h1>
-    <p class="lede">Basic instructions to run the app on Windows, macOS, and Linux.</p>
+    <p class="lede">Kivy Android POC. Scores in SQLite; JSON import/export.</p>
 
-    <h2>What you need</h2>
-    <ul>
-      <li>Speakers or headphones connected</li>
-      <li>Python 3.11 or newer, if you are running from source</li>
-      <li>The <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a> tool, if you are running from source</li>
-    </ul>
-    <p class="note">If you received an installer (.msi, .exe, .dmg, .AppImage, or .deb), use the section for your operating system. If you only have the project folder, use “From source”.</p>
+    <h2>Android APK</h2>
+    <p>On WSL/Linux, in the project folder:</p>
+    <pre><code>pip install buildozer
+buildozer android debug</code></pre>
+    <p>Install <code>bin/*.apk</code> on the phone. Built-in scores: Example and How Deep Is Your Love.</p>
 
-    <h2>Windows</h2>
-    <p>The installer for this version is <code>dist/My Py Music Box-0.1.0.msi</code>.</p>
-    <ol>
-      <li>Open the <code>.msi</code> and follow the wizard. If Windows SmartScreen warns that the publisher is unknown, choose <em>More info</em> and then <em>Run anyway</em>.</li>
-      <li>Start <strong>My Py Music Box</strong> from the Start menu or the desktop shortcut.</li>
-    </ol>
-    <p>Without an installer (from source), in PowerShell, in the project folder:</p>
+    <h2>Desktop smoke test</h2>
     <pre><code>uv sync
 uv run my-py-music-box</code></pre>
 
-    <h2>macOS</h2>
-    <p>With an installer:</p>
-    <ol>
-      <li>Open the <code>.dmg</code> file.</li>
-      <li>Drag <strong>My Py Music Box</strong> into Applications.</li>
-      <li>Open the app. If the system warns that it is unsigned, use <em>Open Anyway</em> in Settings → Privacy &amp; Security.</li>
-    </ol>
-    <p>Without an installer (from source), in Terminal, in the project folder:</p>
-    <pre><code>uv sync
-uv run my-py-music-box</code></pre>
-
-    <h2>Linux</h2>
-    <p>With a package:</p>
-    <ul>
-      <li><strong>AppImage:</strong> make it executable (<code>chmod +x</code> on the file) and double-click it, or run it from a terminal.</li>
-      <li><strong>Deb:</strong> install it with your distribution’s package manager, then open <strong>My Py Music Box</strong> from the applications menu.</li>
-    </ul>
-    <p>Without a package (from source), in a terminal, in the project folder:</p>
-    <pre><code>sudo apt install libportaudio2
-uv sync
-uv run my-py-music-box</code></pre>
-    <p>On WSL, Python does not ship PortAudio. Without <code>libportaudio2</code> the app cannot open audio. The uv <code>hardlink</code> warning on <code>/mnt/c</code> is safe to ignore, or set <code>export UV_LINK_MODE=copy</code>.</p>
-
-    <h2>From source (any system)</h2>
-    <ol>
-      <li>Install <a href="https://www.python.org/downloads/">Python 3.11+</a> and <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a>.</li>
-      <li>Open a terminal in the project folder.</li>
-      <li>Run:</li>
-    </ol>
-    <pre><code>uv sync
-uv run my-py-music-box</code></pre>
-    <p>The app window should open with the Play, Composer, and Settings pages.</p>
-
-    <h2>First use</h2>
-    <ol>
-      <li>On the Play page, the app tries to open <code>examples/How Deep Is Your Music Box.caixa.json</code>. Use <em>Example</em> or <em>Open</em> if you need to load it again.</li>
-      <li>Press Play and check that sound comes through your speakers or headphones.</li>
-      <li>Use Composer to edit the cylinder and Settings for volume and audio device.</li>
-    </ol>
-    <p>Score files use the <code>.caixa.json</code> extension.</p>
+    <h2>Tests</h2>
+    <pre><code>uv run pytest</code></pre>
 
     <footer>
       <p>My Py Music Box is open-source software.<br>
