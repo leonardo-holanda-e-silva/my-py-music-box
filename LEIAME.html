@@ -30,17 +30,12 @@
   <main>
     <p class="lang"><a href="README.html">English</a> · Português (BR)</p>
     <h1>My Py Music Box</h1>
-    <p class="lede">POC Kivy para Android. Partituras em SQLite; import/export JSON.</p>
+    <p class="lede">App desktop (Kivy) de caixa de música. Partituras em SQLite; import/export JSON.</p>
 
-    <h2>APK Android</h2>
-    <p>No WSL/Linux, na pasta do projeto:</p>
-    <pre><code>pip install buildozer
-buildozer android debug</code></pre>
-    <p>Instale o arquivo em <code>bin/*.apk</code> no celular. Já vêm as partituras Example e How Deep Is Your Love.</p>
-
-    <h2>Teste no desktop</h2>
+    <h2>Executar no desktop</h2>
     <pre><code>uv sync
 uv run my-py-music-box</code></pre>
+    <p>Ou: <code>uv run python main.py</code>. Na primeira abertura, seed das partituras Example e How Deep Is Your Love.</p>
 
     <h2>Testes</h2>
     <pre><code>uv run pytest</code></pre>

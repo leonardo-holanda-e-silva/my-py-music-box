@@ -1,7 +1,7 @@
 [project]
 name = "my-py-music-box"
 version = "0.1.0"
-description = "Mobile POC that emulates a classic 21-tine music box (Kivy + SQLite)."
+description = "Desktop music-box emulator (Kivy + SQLite) with a classic 21-tine comb."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]

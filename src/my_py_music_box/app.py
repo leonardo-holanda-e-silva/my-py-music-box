@@ -4,8 +4,10 @@ import os
 import traceback
 from pathlib import Path
 
-# Prefer a desktop-friendly backend when not on Android.
-if not any(key in os.environ for key in ("ANDROID_ARGUMENT", "ANDROID_ROOT")):
+_IS_ANDROID = any(key in os.environ for key in ("ANDROID_ARGUMENT", "ANDROID_ROOT"))
+
+# Desktop defaults before Kivy parses argv / creates the window.
+if not _IS_ANDROID:
     os.environ.setdefault("KIVY_NO_ARGS", "1")
 
 
@@ -43,7 +45,17 @@ class _BrokenEngine:
 
 
 def main() -> None:
+    if not _IS_ANDROID:
+        from kivy.config import Config
+
+        Config.set("graphics", "width", "960")
+        Config.set("graphics", "height", "640")
+        Config.set("graphics", "resizable", "1")
+        Config.set("graphics", "multisamples", "0")
+        Config.set("input", "mouse", "mouse,disable_multitouch")
+
     from kivy.app import App
+    from kivy.core.window import Window
     from kivy.uix.label import Label
     from kivy.uix.screenmanager import ScreenManager
     from kivy.uix.scrollview import ScrollView
@@ -54,6 +66,9 @@ def main() -> None:
     from my_py_music_box.ui.screens.library import LibraryScreen
     from my_py_music_box.ui.screens.play import PlayScreen
     from my_py_music_box.ui.screens.settings import SettingsScreen
+    from my_py_music_box.ui.theme import CREAM_RGBA
+
+    Window.clearcolor = CREAM_RGBA
 
     class MusicBoxApp(App):
         title = "My Py Music Box"

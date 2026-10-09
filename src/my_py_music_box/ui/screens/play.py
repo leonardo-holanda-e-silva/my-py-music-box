@@ -7,6 +7,7 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.slider import Slider
 
+from my_py_music_box.ui.bg import bind_cream_background
 from my_py_music_box.ui.cylinder import CylinderScroll
 from my_py_music_box.ui.theme import CREAM, GOLD, MUTED, NAVY
 
@@ -65,16 +66,7 @@ class PlayScreen(Screen):
         root.add_widget(nav)
 
         self.add_widget(root)
-        with self.canvas.before:
-            from kivy.graphics import Color, Rectangle
-
-            Color(*_rgba(CREAM))
-            self._bg = Rectangle(pos=self.pos, size=self.size)
-        self.bind(pos=self._update_bg, size=self._update_bg)
-
-    def _update_bg(self, *_args) -> None:
-        self._bg.pos = self.pos
-        self._bg.size = self.size
+        bind_cream_background(self)
 
     def on_enter(self, *_args) -> None:
         self.volume.value = self.app_ref.repo.get_volume()

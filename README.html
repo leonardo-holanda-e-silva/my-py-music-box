@@ -29,17 +29,12 @@
   <main>
     <p class="lang">English · <a href="LEIAME.html">Português (BR)</a></p>
     <h1>My Py Music Box</h1>
-    <p class="lede">Kivy Android POC. Scores in SQLite; JSON import/export.</p>
+    <p class="lede">Desktop Kivy music-box app. Scores in SQLite; JSON import/export.</p>
 
-    <h2>Android APK</h2>
-    <p>On WSL/Linux, in the project folder:</p>
-    <pre><code>pip install buildozer
-buildozer android debug</code></pre>
-    <p>Install <code>bin/*.apk</code> on the phone. Built-in scores: Example and How Deep Is Your Love.</p>
-
-    <h2>Desktop smoke test</h2>
+    <h2>Run on desktop</h2>
     <pre><code>uv sync
 uv run my-py-music-box</code></pre>
+    <p>Or: <code>uv run python main.py</code>. First launch seeds Example and How Deep Is Your Love.</p>
 
     <h2>Tests</h2>
     <pre><code>uv run pytest</code></pre>

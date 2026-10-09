@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from kivy.clock import Clock
 from kivy.graphics import Color, Line, Rectangle
 from kivy.properties import BooleanProperty, NumericProperty, ObjectProperty
 from kivy.uix.scrollview import ScrollView
@@ -11,7 +12,6 @@ from my_py_music_box.ui.theme import GOLD_RGBA, MUTED_RGBA, NAVY_RGBA, PANEL_RGB
 CELL_W = 28
 CELL_H = 22
 GUTTER = 36
-# Cap canvas instructions on mobile (scores can be 500+ steps).
 _MAX_DRAW_STEPS = 48
 
 
@@ -25,12 +25,13 @@ class CylinderWidget(Widget):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
+        self._redraw_ev = None
         self.bind(
-            pos=self._redraw,
-            size=self._redraw,
-            score=self._redraw,
-            playhead=self._redraw,
-            view_start=self._redraw,
+            pos=self._request_redraw,
+            size=self._request_redraw,
+            score=self._request_redraw,
+            playhead=self._request_redraw,
+            view_start=self._request_redraw,
         )
 
     def set_score(self, score: Score | None) -> None:
@@ -39,7 +40,7 @@ class CylinderWidget(Widget):
         self.size = (GUTTER + steps * CELL_W + 8, 21 * CELL_H + 8)
         self.size_hint = (None, None)
         self.view_start = 0
-        self._redraw()
+        self._request_redraw()
 
     def set_view_start(self, step: int) -> None:
         if self.score is None:
@@ -47,7 +48,13 @@ class CylinderWidget(Widget):
         max_start = max(0, self.score.steps - _MAX_DRAW_STEPS)
         self.view_start = max(0, min(int(step), max_start))
 
+    def _request_redraw(self, *_args) -> None:
+        if self._redraw_ev is not None:
+            self._redraw_ev.cancel()
+        self._redraw_ev = Clock.schedule_once(self._redraw, 0)
+
     def _redraw(self, *_args) -> None:
+        self._redraw_ev = None
         self.canvas.clear()
         if self.score is None:
             return
@@ -70,9 +77,7 @@ class CylinderWidget(Widget):
                     Color(*NAVY_RGBA)
                     Line(rectangle=(x, y, CELL_W - 2, CELL_H - 2), width=1)
             pin_set = {
-                (p.step, p.tooth)
-                for p in self.score.pins
-                if start <= p.step < end
+                (p.step, p.tooth) for p in self.score.pins if start <= p.step < end
             }
             Color(*GOLD_RGBA)
             for step, tooth in pin_set:
@@ -96,7 +101,7 @@ class CylinderWidget(Widget):
         tooth = 20 - int(local_y // CELL_H)
         if 0 <= step < self.score.steps and 0 <= tooth < 21:
             self.score.toggle_pin(step, tooth)
-            self._redraw()
+            self._request_redraw()
             return True
         return True
 

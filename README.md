@@ -1,8 +1,8 @@
 # My Py Music Box
 
-POC mobile app (Kivy) that emulates a classic **21-tine** music box.
+App desktop (Kivy) that emulates a classic **21-tine** music box.
 
-Pages: **Library**, **Play**, **Composer**, **Settings**.
+Screens: **Library**, **Play**, **Composer**, **Settings**.
 
 Scores live in **SQLite**. Import/export uses `.caixa.json` (`caixa-musica-v1`).
 
@@ -14,35 +14,30 @@ Visual identity: [`branding/PALETTE.md`](branding/PALETTE.md).
 
 - Python 3.11+
 - [uv](https://docs.astral.sh/uv/)
-- Android APK build: [Buildozer](https://buildozer.readthedocs.io/) on **Linux/WSL**
 
-## Desktop smoke test
+## Run (desktop)
 
 ```bash
 uv sync
 uv run my-py-music-box
 ```
 
-Tests (unit only):
+Or:
+
+```bash
+uv run python main.py
+```
+
+Built-in scores are seeded on first launch from `assets/scores/`:
+
+- Example
+- How Deep Is Your Love
+
+## Tests
 
 ```bash
 uv run pytest
 ```
-
-## Android APK (WSL)
-
-```bash
-# once: install Buildozer deps on Ubuntu/WSL, then:
-pip install buildozer
-buildozer android debug
-```
-
-Install the APK from `bin/*.apk` on the phone.
-
-Built-in scores shipped in the APK:
-
-- Example
-- How Deep Is Your Love
 
 ## Score format
 

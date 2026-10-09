@@ -9,6 +9,7 @@ from kivy.uix.textinput import TextInput
 
 from my_py_music_box.paths import logo_path
 from my_py_music_box.score.model import MAX_STEPS, MIN_BPM, MIN_STEPS
+from my_py_music_box.ui.bg import bind_cream_background
 from my_py_music_box.ui.theme import CREAM, GOLD, MUTED, NAVY
 
 
@@ -32,7 +33,9 @@ class SettingsScreen(Screen):
         if logo is not None:
             from kivy.uix.image import Image
 
-            root.add_widget(Image(source=str(logo), size_hint_y=None, height=120, allow_stretch=True))
+            root.add_widget(
+                Image(source=str(logo), size_hint_y=None, height=120, fit_mode="contain")
+            )
 
         vol_row = BoxLayout(size_hint_y=None, height=40, spacing=8)
         vol_row.add_widget(Label(text="Volume", color=_rgba(NAVY), size_hint_x=0.3))
@@ -84,16 +87,7 @@ class SettingsScreen(Screen):
         root.add_widget(nav)
 
         self.add_widget(root)
-        with self.canvas.before:
-            from kivy.graphics import Color, Rectangle
-
-            Color(*_rgba(CREAM))
-            self._bg = Rectangle(pos=self.pos, size=self.size)
-        self.bind(pos=self._update_bg, size=self._update_bg)
-
-    def _update_bg(self, *_args) -> None:
-        self._bg.pos = self.pos
-        self._bg.size = self.size
+        bind_cream_background(self)
 
     def on_enter(self, *_args) -> None:
         self.volume.value = self.app_ref.repo.get_volume()

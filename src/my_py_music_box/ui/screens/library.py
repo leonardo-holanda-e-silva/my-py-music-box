@@ -6,7 +6,8 @@ from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
 
-from my_py_music_box.ui.theme import CREAM, GOLD, MUTED, NAVY, PANEL
+from my_py_music_box.ui.bg import bind_cream_background
+from my_py_music_box.ui.theme import GOLD, MUTED, NAVY, PANEL
 
 
 class LibraryScreen(Screen):
@@ -48,23 +49,13 @@ class LibraryScreen(Screen):
             nav.add_widget(btn)
         root.add_widget(nav)
         self.add_widget(root)
-        self.canvas.before.clear()
-        with self.canvas.before:
-            from kivy.graphics import Color, Rectangle
-
-            Color(*self._rgba(CREAM))
-            self._bg = Rectangle(pos=self.pos, size=self.size)
-        self.bind(pos=self._update_bg, size=self._update_bg)
+        bind_cream_background(self)
 
     @staticmethod
     def _rgba(hex_color: str) -> tuple[float, float, float, float]:
         h = hex_color.lstrip("#")
         r, g, b = int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
         return r / 255, g / 255, b / 255, 1
-
-    def _update_bg(self, *_args) -> None:
-        self._bg.pos = self.pos
-        self._bg.size = self.size
 
     def on_enter(self, *_args) -> None:
         self.refresh()
